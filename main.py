@@ -3,6 +3,14 @@ from bs4 import BeautifulSoup
 
 
 dc_inside_url = "https://gall.dcinside.com";
+today_humor_url = "http://www.todayhumor.co.kr";
+ruri_url = "https://bbs.ruliweb.com/";
+fm_korea = "www.fmkorea.com";
+nate_pann = "pann.nate.com";
+bobaeddream = "https://www.bobaedream.co.kr";
+instiz = "https://www.instiz.net/"
+
+
 
 class LinkExtractor:
     def __init__(self):
