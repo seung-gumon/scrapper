@@ -10,6 +10,8 @@ nate_pann = "https://pann.nate.com";
 bobaeddream = "https://www.bobaedream.co.kr";
 instiz = "https://www.instiz.net/"
 
+comunity_links= [dc_inside_url, today_humor_url, ruri_url, fm_korea, nate_pann, bobaeddream, instiz]
+
 
 
 class LinkExtractor:
@@ -23,11 +25,12 @@ class LinkExtractor:
 
     def extract_links(self,community_url , limit):
         soup = BeautifulSoup(self.driver.page_source, 'html.parser')
-        print("community_url ::: ",community_url);
-        links = soup.find_all('a', href=lambda x: x and x.startswith(community_url), limit=limit)
-        print("Links :::" , links);
-        for link in links:
-            self.collected_links.append(link.get('href'))
+        for comunity_link in comunity_links:
+            print("Extracting Links from", comunity_link)
+            links = soup.find_all('a', href=lambda x: x and x.startswith(community_url), limit=limit)
+            for link in links:
+                href = link.get('href');
+                self.collected_links[comunity_link] = href
 
     def close_driver(self):
         self.driver.quit()
@@ -41,5 +44,4 @@ class LinkExtractor:
 extractor = LinkExtractor()
 extractor.run(nate_pann)
 # 추출한 링크 확인
-print("Collected Links Length:", extractor.collected_links)
 print("Collected Links Length:", len(extractor.collected_links))
