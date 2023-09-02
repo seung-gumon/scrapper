@@ -99,7 +99,7 @@ def main():
 
     end_time = time()
     
-    print("===== After running the program =====")
+    print("===== After running the program =======")
     print_system_resources()
     print(f"Time taken: {end_time - start_time} seconds")
 
