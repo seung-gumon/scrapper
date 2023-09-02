@@ -1,10 +1,6 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup
 import json
-import psutil
-from time import time, sleep
-import os
-
 
 # 웹사이트 URL과 이름 매핑
 site_names = {
@@ -37,15 +33,6 @@ comunity_links = [
     nate_pann,
     bobaeddream
 ]
-
-def print_system_resources():
-    cpu_percent = psutil.cpu_percent()
-    memory_info = psutil.virtual_memory()
-    process = psutil.Process(os.getpid())
-    print(f"CPU Usage: {cpu_percent}%")
-    print(f"Memory Usage: {memory_info.percent}%")
-    print(f"Process Memory Usage: {process.memory_info().rss / 1024 ** 2:.2f} MB")  # 현재 프로세스의 메모리 사용량 (MB 단위)
-
 
 class LinkExtractor:
     def __init__(self):
@@ -85,23 +72,8 @@ class LinkExtractor:
         self.close_driver()
         return self.transform_links_to_json()
 
-
-def main():
-    print("===== Before running the program =====")
-    print_system_resources()
-
-    start_time = time()
-    
-    # 객체 생성 및 실행
-    extractor = LinkExtractor()
-    transformed_json = extractor.run()
-
-
-    end_time = time()
-    
-    print("===== After running the program =====")
-    print_system_resources()
-    print(f"Time taken: {end_time - start_time} seconds")
-
-if __name__ == "__main__":
-    main()
+# 객체 생성 및 실행
+extractor = LinkExtractor()
+transformed_json = extractor.run()
+print("Transformed JSON Data:")
+print(transformed_json)
