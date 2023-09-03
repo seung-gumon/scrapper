@@ -1,6 +1,7 @@
 from scrapper.extractor import link_extractor
 from scrapper.crawling_by_url import crawling_by_url
 from bs4 import BeautifulSoup
+from scrapper.site.fm_korea import fm_korea
 
 
 site_url = "https://www.fmkorea.com";
@@ -12,9 +13,9 @@ transformed_json = extractor.run()
 
 
 
+
 for site_object in transformed_json:
     if site_object['site_url'] == site_url:
           for link in site_object['links']:
             soup = crawling.run(link);
-            main_post = soup.find("div", {"id": "bd_capture"})
-            print(main_post.prettify())
+            response = fm_korea(soup)
