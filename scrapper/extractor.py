@@ -1,6 +1,6 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup
-import json
+
 
 # 웹사이트 URL과 이름 매핑
 site_names = {
@@ -34,7 +34,7 @@ comunity_links = [
     bobaeddream
 ]
 
-class LinkExtractor:
+class link_extractor:
     def __init__(self):
         self.driver = webdriver.Chrome()
         self.collected_links = {}
@@ -64,7 +64,7 @@ class LinkExtractor:
                 "site_name": site_name,
                 "links": links
             })
-        return json.dumps(transformed_data, indent=2, ensure_ascii=False)
+        return transformed_data;
 
     def run(self, limit=10):
         self.load_page(web_crawling_target)
