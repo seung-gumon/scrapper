@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from scrapper.upload_images import upload_images
 
 def nate_pann(soup, source_url):
     try:
@@ -20,6 +20,10 @@ def nate_pann(soup, source_url):
         
         return_dict['title'] = title
         return_dict['created_at'] = datetime.strptime(created_at, '%Y.%m.%d %H:%M').isoformat()
+        
+        image_url_dict=[];
+        upload_images(image_url_dict,'nate_paan')
+        
         
         print('return_dict :::', return_dict)
         
