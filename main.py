@@ -1,6 +1,7 @@
 from scrapper.extractor import link_extractor
 from scrapper.crawling_by_url import crawling_by_url
 from scrapper.select_site_type import select_site
+from scrapper.upload_images import upload_images
 
 site_url = "https://pann.nate.com"  # 해당줄은 Parameter로 삽입 예정
 
@@ -18,7 +19,14 @@ def check_error(response_object):
         raise KeyError("Dictionary is empty")
     
 
+
+image_url_dict = [
+    'https://blog.kakaocdn.net/dn/0mySg/btqCUccOGVk/nQ68nZiNKoIEGNJkooELF1/img.jpg',
+    'https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg'
+    ]
+
 try:
+    # upload_images(image_url_dict)
     for site_object in transformed_json:
         if site_object['site_url'] == site_url:
             for link in site_object['links']:

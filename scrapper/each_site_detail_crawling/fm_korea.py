@@ -11,4 +11,6 @@ def fm_korea(soup):
     except Exception as e:
         if str(e) == 'empty title':
             return 'empty title'
-        return {}
+        return {
+          
+        }
