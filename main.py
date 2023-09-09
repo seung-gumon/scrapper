@@ -26,15 +26,15 @@ image_url_dict = [
     ]
 
 try:
-    # upload_images(image_url_dict)
-    for site_object in transformed_json:
-        if site_object['site_url'] == site_url:
-            for link in site_object['links']:
-                soup = crawling.run(link)
-                selected_site_instance = select_site(site_url)
-                response = selected_site_instance(soup,link)
-                print('response_object :::', response)
-                check_error(response)
+    upload_images(image_url_dict,'nate_paan')
+    # for site_object in transformed_json:
+    #     if site_object['site_url'] == site_url:
+    #         for link in site_object['links']:
+    #             soup = crawling.run(link)
+    #             selected_site_instance = select_site(site_url)
+    #             response = selected_site_instance(soup,link)
+    #             print('response_object :::', response)
+    #             check_error(response)
 except (ValueError, KeyError) as e:
     if isinstance(e, ValueError):
         print(f"('{site_url} ::: {str(e)}')")
