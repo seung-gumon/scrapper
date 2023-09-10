@@ -21,10 +21,7 @@ def check_error(response_object):
     
 
 
-image_url_dict = [
-    'https://blog.kakaocdn.net/dn/0mySg/btqCUccOGVk/nQ68nZiNKoIEGNJkooELF1/img.jpg',
-    'https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg'
-    ]
+
 
 try:
     for site_object in transformed_json:
@@ -33,7 +30,7 @@ try:
                 soup = crawling.run(link)
                 selected_site_instance = select_site(site_url)
                 response = selected_site_instance(soup,link)
-                print('response_object :::', response)
+                print('결과 값 :::', response)
                 check_error(response)
 except (ValueError, KeyError) as e:
     if isinstance(e, ValueError):
