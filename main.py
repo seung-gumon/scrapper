@@ -24,6 +24,7 @@ def check_error(response_object):
 
 
 try:
+    response_arr = []
     for site_object in transformed_json:
         if site_object['site_url'] == site_url:
             for link in site_object['links']:
@@ -31,7 +32,9 @@ try:
                 selected_site_instance = select_site(site_url)
                 response = selected_site_instance(soup,link)
                 print('결과 값 :::', response)
+                response_arr.append(response)
                 check_error(response)
+    print('response_arr :::' , response_arr);
 except (ValueError, KeyError) as e:
     if isinstance(e, ValueError):
         print(f"('{site_url} ::: {str(e)}')")
