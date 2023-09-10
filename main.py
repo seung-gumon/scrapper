@@ -3,6 +3,7 @@ from scrapper.crawling_by_url import crawling_by_url
 from scrapper.select_site_type import select_site
 from scrapper.upload_images import upload_images
 
+
 site_url = "https://pann.nate.com"  # 해당줄은 Parameter로 삽입 예정
 
 # 객체 생성 및 실행
@@ -26,15 +27,14 @@ image_url_dict = [
     ]
 
 try:
-    upload_images(image_url_dict,'nate_paan')
-    # for site_object in transformed_json:
-    #     if site_object['site_url'] == site_url:
-    #         for link in site_object['links']:
-    #             soup = crawling.run(link)
-    #             selected_site_instance = select_site(site_url)
-    #             response = selected_site_instance(soup,link)
-    #             print('response_object :::', response)
-    #             check_error(response)
+    for site_object in transformed_json:
+        if site_object['site_url'] == site_url:
+            for link in site_object['links']:
+                soup = crawling.run(link)
+                selected_site_instance = select_site(site_url)
+                response = selected_site_instance(soup,link)
+                print('response_object :::', response)
+                check_error(response)
 except (ValueError, KeyError) as e:
     if isinstance(e, ValueError):
         print(f"('{site_url} ::: {str(e)}')")

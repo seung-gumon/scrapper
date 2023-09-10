@@ -9,20 +9,23 @@ def nate_pann(soup, source_url):
             'source_url': source_url  # 함수 인자로 전달
         }
 
-        post_html = soup.find("div", {"class": "post-tit-info"})
-        title = post_html.find("h1").text
+        title_html = soup.find("div", {"class": "post-tit-info"})
+        content_area = soup.find("div" , {"id": "contentArea"});
+        title = title_html.find("h1").text
 
-        created_at = post_html.find("span", {"class": "date"}).text
+        created_at = title_html.find("span", {"class": "date"}).text
         if not title:
             raise Exception('empty title')
         if not created_at:
             raise Exception('empty created_at')
         
+
         return_dict['title'] = title
         return_dict['created_at'] = datetime.strptime(created_at, '%Y.%m.%d %H:%M').isoformat()
         
-        image_url_dict=[];
-        upload_images(image_url_dict,'nate_paan')
+        print('content_area :::' , content_area);
+        # image_url_dict=[];
+        # upload_images(image_url_dict,'nate_paan')
         
         
         print('return_dict :::', return_dict)
