@@ -10,26 +10,26 @@ def nate_pann(soup, source_url):
             'source_url': source_url,
         }
 
-        title_html = soup.find("div", {"class": "post-tit-info"})
+        title_created_wrapper_html = soup.find("div", {"class": "post-tit-info"})
         content_area = soup.find("div", {"id": "contentArea"})
-        
-        scrapped_images = content_area.find_all("img")
-        
-        content_images = []
-        for image in scrapped_images:
-            src = image.get('src', '')
-            alt = image.get('alt', '')
-            content_images.append({'src': src, 'alt': alt})
 
-        title = title_html.find("h1").text
-        created_at = title_html.find("span", {"class": "date"}).text
+        title = title_created_wrapper_html.find("h1").text
+        created_at = title_created_wrapper_html.find("span", {"class": "date"}).text        
 
         if not title:
             raise Exception('empty title')
         if not created_at:
             raise Exception('empty created_at')
+        
+        scrapped_images = content_area.find_all("img")
+        content_images = []
+        
+        for image in scrapped_images:
+            src = image.get('src', '')
+            alt = image.get('alt', '')
+            content_images.append({'src': src, 'alt': alt})
 
-        convert_images = upload_images(content_images, 'nate_paan')
+        convert_images = upload_images(content_images, 'nate_paan', source_url)
 
         for new_img, old_img in zip(convert_images, scrapped_images):
             old_img['src'] = new_img['src']

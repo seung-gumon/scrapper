@@ -11,6 +11,8 @@ extractor = link_extractor()
 crawling = crawling_by_url()
 transformed_json = extractor.run()
 
+
+
 response_arr = []
 
 def check_error(response_object):
@@ -18,9 +20,6 @@ def check_error(response_object):
         raise ValueError(response_object)
     if response_object == {}:
         raise KeyError("Dictionary is empty")
-    
-
-
 
 
 try:
@@ -31,10 +30,9 @@ try:
                 soup = crawling.run(link)
                 selected_site_instance = select_site(site_url)
                 response = selected_site_instance(soup,link)
-                print('결과 값 :::', response)
-                response_arr.append(response)
                 check_error(response)
-    print('response_arr :::' , response_arr);
+                response_arr.append(response)
+    print("Response Array ::: ",response_arr)
 except (ValueError, KeyError) as e:
     if isinstance(e, ValueError):
         print(f"('{site_url} ::: {str(e)}')")

@@ -55,18 +55,24 @@ class ImageProcessor:
         return output_io
 
 class ImageUploader:
-    def __init__(self, s3_client: S3Client, image_processor: ImageProcessor):
+    def __init__(self, s3_client: S3Client, image_processor: ImageProcessor, referer_url):
         self.s3_client = s3_client
         self.image_processor = image_processor
+        self.referer_url = referer_url
 
     def upload_images(self, image_urls, folder_name):
         try:
             for index, ele in enumerate(image_urls):
                 unique_id = str(uuid.uuid4())
-                
-                response = requests.get(ele['src'])
+                headers = {
+                    'User-Agent': 'Mozilla/5.0',
+                    'Referer': self.referer_url
+                }
+                response = requests.get(ele['src'] , headers=headers)
+                print('upload_images response :::' , response);
                 original_image = self.image_processor.download(ele['src'])
                 
+                print('original_image :::' , original_image);
                 # Check the size of the image in bytes and convert it to megabytes
                 image_size_MB = len(response.content) / (1024 * 1024)
 
@@ -74,7 +80,6 @@ class ImageUploader:
                 if self.image_processor.is_animated(original_image) or image_size_MB > 3:
                     output_io = BytesIO(response.content)
                     output_io.seek(0)
-                    parsed_url = urllib.parse.urlparse(ele['src'])
                     extension = 'gif'
                     content_type = 'image/gif'
                 else:
@@ -87,13 +92,13 @@ class ImageUploader:
                 ele['src'] = upload_url
 
         except Exception as e:
-            print(f'An exception occurred: {e}')
+            print(f'upload class 에서 에러났음 :::  {e}')
         return image_urls
 
-def upload_images(images, bucket_name):
+def upload_images(images, bucket_name , referer_url):
     config = Config()
     s3_client = S3Client(config)
     image_processor = ImageProcessor()
     
-    uploader = ImageUploader(s3_client, image_processor)
+    uploader = ImageUploader(s3_client, image_processor, referer_url)
     return uploader.upload_images(images, bucket_name)
