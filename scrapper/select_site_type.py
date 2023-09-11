@@ -6,6 +6,8 @@ def select_site(site_url):
       if site_url == 'https://www.fmkorea.com' :
             return fm_korea.fm_korea
       elif site_url == 'https://pann.nate.com' :
-            return nate_pann.nate_pann
+            nate_pann_instance = nate_pann.NatePannScrapper()
+            return nate_pann_instance.scrap
       elif site_url == 'https://gall.dcinside.com' :
-            return dc_inside.dc_inside
+            dc_inside_instance = dc_inside.DCInsideScrapper()
+            return dc_inside_instance.scrap
