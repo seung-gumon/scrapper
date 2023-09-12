@@ -28,10 +28,26 @@ class BaseScrapper:
             title = self.get_title(soup)
             created_at = self.get_created_at(soup)
             
+           
+            # 날짜 형식을 처리하는 부분
+            formats = ['%Y.%m.%d %H:%M:%S', '%Y.%m.%d %H:%M']
+            parsed_datetime = None
+            for fmt in formats:
+                try:
+                    parsed_datetime = datetime.strptime(created_at, fmt)
+                    break
+                except ValueError:
+                    continue
+
+            if parsed_datetime is None:
+                raise ValueError(f'Unknown date format: {created_at}')
+
+            
             if not title:
                 raise Exception('empty title')
             if not created_at:
                 raise Exception('empty created_at')
+            
 
             scrapped_images = content_area.find_all("img")
             content_images = []
@@ -48,11 +64,13 @@ class BaseScrapper:
 
             for a_tag in content_area.find_all('a'):
                 a_tag.unwrap()
+            for script_tag in content_area.find_all('script'):
+                script_tag.decompose()
 
             updated_html_content = str(content_area).replace('\t', '').replace('\n', '').replace('\\', '')
 
             return_dict['title'] = title
-            return_dict['created_at'] = datetime.strptime(created_at, '%Y.%m.%d %H:%M').isoformat()
+            return_dict['created_at'] = parsed_datetime.isoformat()
             return_dict['updated_html_content'] = updated_html_content
             return return_dict
 

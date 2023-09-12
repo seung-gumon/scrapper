@@ -76,10 +76,9 @@ class ImageUploader:
                     'Referer': self.referer_url
                 }
                 response = requests.get(ele['src'] , headers=headers)
-                print('upload_images response :::' , response);
                 original_image = self.image_processor.download(ele['src'])
                 
-                print('original_image :::' , original_image);
+                
                 # Check the size of the image in bytes and convert it to megabytes
                 image_size_MB = len(response.content) / (1024 * 1024)
 
