@@ -37,8 +37,15 @@ class S3Client:
         return f"https://{self.config.bucket_name}.s3.amazonaws.com/{object_name}"
 
 class ImageProcessor:
+    def __init__(self, referer_url):
+        self.referer_url = referer_url
+    
     def download(self, url):
-        response = requests.get(url)
+        headers = {
+            'User-Agent': 'Mozilla/5.0',
+            'Referer': self.referer_url
+        }
+        response = requests.get(url, headers=headers)
         return Image.open(BytesIO(response.content))
 
     def is_animated(self, image):
@@ -98,7 +105,7 @@ class ImageUploader:
 def upload_images(images, bucket_name , referer_url):
     config = Config()
     s3_client = S3Client(config)
-    image_processor = ImageProcessor()
+    image_processor = ImageProcessor(referer_url)
     
     uploader = ImageUploader(s3_client, image_processor, referer_url)
     return uploader.upload_images(images, bucket_name)

@@ -4,7 +4,7 @@ from scrapper.select_site_type import select_site
 from scrapper.upload_images import upload_images
 
 
-site_url = "https://pann.nate.com"  # 해당줄은 Parameter로 삽입 예정
+site_url = "https://gall.dcinside.com"  # 해당줄은 Parameter로 삽입 예정
 
 # 객체 생성 및 실행
 extractor = link_extractor()
