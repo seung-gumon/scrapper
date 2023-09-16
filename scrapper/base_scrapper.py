@@ -30,7 +30,7 @@ class BaseScrapper:
             
            
             # 날짜 형식을 처리하는 부분
-            formats = ['%Y.%m.%d %H:%M:%S', '%Y.%m.%d %H:%M']
+            formats = ['%Y.%m.%d %H:%M:%S', '%Y.%m.%d %H:%M', '%Y.%m.%d (%H:%M:%S)']  # 추가된 형식
             parsed_datetime = None
             for fmt in formats:
                 try:
@@ -50,17 +50,29 @@ class BaseScrapper:
             
 
             scrapped_images = content_area.find_all("img")
-            content_images = []
+            scrapped_videos = content_area.find_all("video")  # 오타 수정 (scrapped_vidoes -> scrapped_videos)
 
+            # 이미지 처리
+            content_images = []
             for image in scrapped_images:
                 src = image.get('src', '')
                 alt = image.get('alt', '')
                 content_images.append({'src': src, 'alt': alt})
 
-            convert_images = upload_images(content_images, self.site_name, source_url)
+            # 비디오 처리
+            content_videos = []
+            for video in scrapped_videos:
+                src = video.get('src', '')
+                content_videos.append({'src': src})
 
+            # 이미지와 비디오 모두 upload_images 함수를 사용하여 업로드
+            convert_images = upload_images(content_images, self.site_name, source_url)
             for new_img, old_img in zip(convert_images, scrapped_images):
                 old_img['src'] = new_img['src']
+
+            convert_videos = upload_images(content_videos, self.site_name, source_url)
+            for new_vid, old_vid in zip(convert_videos, scrapped_videos):
+                old_vid['src'] = new_vid['src']
 
             for a_tag in content_area.find_all('a'):
                 a_tag.unwrap()
