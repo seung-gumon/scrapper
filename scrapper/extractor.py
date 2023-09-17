@@ -11,6 +11,7 @@ site_names = {
     "https://pann.nate.com": "네이트 판",
     "https://www.bobaedream.co.kr": "보배드림",
     "http://www.etoland.co.kr": "이토랜드",
+    "http://web.humoruniv.com" : "웃긴대학"
 }
 
 # 나머지 코드는 동일
@@ -21,6 +22,7 @@ fm_korea = "https://www.fmkorea.com"
 nate_pann = "https://pann.nate.com"
 bobaeddream = "https://www.bobaedream.co.kr"
 etoland = "http://www.etoland.co.kr"
+funny_univ = "http://web.humoruniv.com"
 
 web_crawling_target = "https://todaybeststory.com/community.html"
 

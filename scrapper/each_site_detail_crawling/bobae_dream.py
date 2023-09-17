@@ -20,6 +20,3 @@ class BobaeDreamScrapper(BaseScrapper):
       if count_group:
             last_text = list(count_group.stripped_strings)[-1]
             return re.sub(r'\([^)]*\)', '', last_text).strip()
-  
-  
-  
