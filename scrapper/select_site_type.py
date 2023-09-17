@@ -2,6 +2,7 @@ from .each_site_detail_crawling import fm_korea
 from .each_site_detail_crawling import nate_pann
 from .each_site_detail_crawling import dc_inside
 from .each_site_detail_crawling import ruri_web
+from .each_site_detail_crawling import bobae_dream
 
 
 
@@ -18,4 +19,7 @@ def select_site(site_url):
       elif site_url == 'https://bbs.ruliweb.com' :
             ruri_web_instance = ruri_web.RuriWebScrapper()
             return ruri_web_instance.scrap
+      elif site_url == 'https://www.bobaedream.co.kr' :
+            bobae_dream_instance = bobae_dream.BobaeDreamScrapper()
+            return bobae_dream_instance.scrap
       

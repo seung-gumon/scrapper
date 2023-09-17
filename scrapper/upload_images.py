@@ -9,12 +9,16 @@ from dotenv import load_dotenv
 
 # Load .env
 load_dotenv()
+# Remove PIL memory limits
+Image.MAX_IMAGE_PIXELS = None
+
 
 class Config:
     def __init__(self):
         self.aws_access_key_id = os.environ.get('aws_access_key_id')
         self.aws_secret_access_key = os.environ.get('aws_secret_access_key')
         self.bucket_name = os.environ.get('image_bucket_name')
+        self.user_agent = os.environ.get('user_agent')
 
 class S3Client:
     def __init__(self, config: Config):
@@ -38,10 +42,11 @@ class S3Client:
 class AssetsProcessor:
     def __init__(self, referer_url):
         self.referer_url = referer_url
+        self.user_agent = os.environ.get('user_agent')
     
     def download(self, url):
         headers = {
-            'User-Agent': 'Mozilla/5.0',
+            'User-Agent': self.user_agent,
             'Referer': self.referer_url
         }
         response = requests.get(url, headers=headers)
@@ -65,22 +70,23 @@ class AssetsUploader:
         self.s3_client = s3_client
         self.image_processor = image_processor
         self.referer_url = referer_url
+        self.user_agent = os.environ.get('user_agent')
 
     def upload_images(self, image_urls, folder_name):
         try:
             for index, ele in enumerate(image_urls):
                 unique_id = str(uuid.uuid4())
                 headers = {
-                    'User-Agent': 'Mozilla/5.0',
+                    'User-Agent': self.user_agent,
                     'Referer': self.referer_url
                 }
                 response = requests.get(ele['src'] , headers=headers)
-                original_image = self.image_processor.download(ele['src'])
-                
-                
+                original_image = self.image_processor.download(ele['src'])        
+                        
                 # Check the size of the image in bytes and convert it to megabytes
+                
                 image_size_MB = len(response.content) / (1024 * 1024)
-
+                print("이미지 사이즈 :::", image_size_MB , ele['src'])
                 # If image is animated or size exceeds 3MB, treat it as a GIF
                 if self.image_processor.is_animated(original_image) or image_size_MB > 3:
                     output_io = BytesIO(response.content)
@@ -107,11 +113,13 @@ class AssetsUploader:
             for index, ele in enumerate(video_urls):
                 unique_id = str(uuid.uuid4())
                 headers = {
-                    'User-Agent': 'Mozilla/5.0',
+                    'User-Agent': self.user_agent,
                     'Referer': self.referer_url
                 }
                 response = requests.get(ele['src'], headers=headers)
                 
+                video_size_MB = len(response.content) / (1024 * 1024)
+                print("비디오 사이즈 :::", video_size_MB , ele['src'])
                 # Assuming all URLs in video_urls are actually videos
                 output_io = BytesIO(response.content)
                 output_io.seek(0)
