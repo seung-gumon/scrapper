@@ -1,11 +1,10 @@
 import boto3
 import os
 import requests
-from PIL import Image, ImageSequence
+from PIL import Image
 from io import BytesIO
 import uuid
 from dotenv import load_dotenv
-import urllib.parse
 
 
 # Load .env
@@ -36,7 +35,7 @@ class S3Client:
         )
         return f"https://{self.config.bucket_name}.s3.amazonaws.com/{object_name}"
 
-class ImageProcessor:
+class AssetsProcessor:
     def __init__(self, referer_url):
         self.referer_url = referer_url
     
@@ -61,8 +60,8 @@ class ImageProcessor:
         output_io.seek(0)
         return output_io
 
-class ImageUploader:
-    def __init__(self, s3_client: S3Client, image_processor: ImageProcessor, referer_url):
+class AssetsUploader:
+    def __init__(self, s3_client: S3Client, image_processor: AssetsProcessor, referer_url):
         self.s3_client = s3_client
         self.image_processor = image_processor
         self.referer_url = referer_url
@@ -96,15 +95,49 @@ class ImageUploader:
                 upload_url = self.s3_client.upload(output_io, folder_name, unique_id, content_type, extension)
                 
                 ele['src'] = upload_url
+                
 
         except Exception as e:
             print(f'upload class 에서 에러났음 :::  {e}')
         return image_urls
+    
+    
+    def upload_videos(self, video_urls, folder_name):
+        try:
+            for index, ele in enumerate(video_urls):
+                unique_id = str(uuid.uuid4())
+                headers = {
+                    'User-Agent': 'Mozilla/5.0',
+                    'Referer': self.referer_url
+                }
+                response = requests.get(ele['src'], headers=headers)
+                
+                # Assuming all URLs in video_urls are actually videos
+                output_io = BytesIO(response.content)
+                output_io.seek(0)
+                extension = 'mp4'  # Assuming the video is in mp4 format
+                content_type = 'video/mp4'
+                
+                upload_url = self.s3_client.upload(output_io, folder_name, unique_id, content_type, extension)
+                
+                ele['src'] = upload_url
+        except Exception as e:
+            print(f'upload class 에서 에러났음 :::  {e}')
+        return video_urls
+
 
 def upload_images(images, bucket_name , referer_url):
     config = Config()
     s3_client = S3Client(config)
-    image_processor = ImageProcessor(referer_url)
+    image_processor = AssetsProcessor(referer_url)
     
-    uploader = ImageUploader(s3_client, image_processor, referer_url)
+    uploader = AssetsUploader(s3_client, image_processor, referer_url)
     return uploader.upload_images(images, bucket_name)
+
+def upload_videos(videos , bucket_name , referer_url):
+    config = Config()
+    s3_client = S3Client(config)
+    video_processor = AssetsProcessor(referer_url)
+    
+    uploader = AssetsUploader(s3_client, video_processor, referer_url)
+    return uploader.upload_videos(videos, bucket_name)

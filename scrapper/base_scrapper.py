@@ -1,6 +1,7 @@
 from datetime import datetime
 from bs4 import BeautifulSoup
 from scrapper.upload_images import upload_images
+from scrapper.upload_images import upload_videos
 
 class BaseScrapper:
     def __init__(self, site_name, site_url):
@@ -70,7 +71,7 @@ class BaseScrapper:
             for new_img, old_img in zip(convert_images, scrapped_images):
                 old_img['src'] = new_img['src']
 
-            convert_videos = upload_images(content_videos, self.site_name, source_url)
+            convert_videos = upload_videos(content_videos, self.site_name, source_url)
             for new_vid, old_vid in zip(convert_videos, scrapped_videos):
                 old_vid['src'] = new_vid['src']
 
