@@ -1,11 +1,16 @@
 from scrapper.extractor import link_extractor
 from scrapper.crawling_by_url import crawling_by_url
 from scrapper.select_site_type import select_site
-from scrapper.upload_images import upload_images
+import json
+
+# 파일에서 JSON 데이터 읽기
+with open('scrapping_target_links.json', 'r') as f:
+    scrapping_target_link_arr = json.load(f)
 
 
 # site_url = "https://gall.dcinside.com"  # 해당줄은 Parameter로 삽입 예정
 site_url = "https://www.bobaedream.co.kr"
+
 
 # 객체 생성 및 실행
 extractor = link_extractor()
