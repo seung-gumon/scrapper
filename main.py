@@ -1,6 +1,8 @@
 from scrapper.extractor import link_extractor
 from scrapper.crawling_by_url import crawling_by_url
 from scrapper.select_site_type import select_site
+from scrapper.sort_community import separate_community
+
 import json
 
 # 파일에서 JSON 데이터 읽기
@@ -8,18 +10,18 @@ with open('scrapping_target_links.json', 'r') as f:
     scrapping_target_link_arr = json.load(f)
 
 
+
 # site_url = "https://gall.dcinside.com"  # 해당줄은 Parameter로 삽입 예정
-site_url = "https://www.bobaedream.co.kr"
+# site_url = "https://www.bobaedream.co.kr"
 
 
 # 객체 생성 및 실행
-extractor = link_extractor()
 crawling = crawling_by_url()
-transformed_json = extractor.run()
+transformed_json = separate_community(scrapping_target_link_arr)
 
 
 
-response_arr = []
+
 
 def check_error(response_object):
     if isinstance(response_object, str):
@@ -30,20 +32,22 @@ def check_error(response_object):
 
 try:
     response_arr = []
+    print("transformed_json ::: ",transformed_json)
     for site_object in transformed_json:
-        if site_object['site_url'] == site_url:
-            for link in site_object['links']:
-                soup = crawling.run(link)
-                selected_site_instance = select_site(site_url)
-                response = selected_site_instance(soup,link)
+                print("뭐야 이거 빈츠 ::: ",site_object)
+                soup = crawling.run(site_object["original_url"])
+                selected_site_instance = select_site(site_object["site_url"])
+                print(site_object["original_url"])
+                response = selected_site_instance(soup , site_object["original_url"])
                 check_error(response)
                 response_arr.append(response)
     print("Response Array ::: ",response_arr)
 except (ValueError, KeyError) as e:
     if isinstance(e, ValueError):
-        print(f"('{site_url} ::: {str(e)}')")
+        print(e)
+        # print(f"('{site_url} ::: {str(e)}')")
     if isinstance(e, KeyError):
         print(e)
-        print(f"('{site_url} ::: 승석아 뭔가 잘못됐다. 확인해봐라..')")
+        # print(f"('{site_url} ::: 승석아 뭔가 잘못됐다. 확인해봐라..')")
     crawling.close_driver()
 

@@ -2,6 +2,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import json  # JSON 처리를 위한 모듈 추가
 
+# /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222
+# 위 명령어를 통해 디버깅 포트를 열어준다.
 # 기존에 실행 중인 Chrome에 연결
 chrome_options = Options()
 chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
@@ -19,7 +21,6 @@ for handle in window_handles:
 
 # 리스트를 JSON 형태로 변환
 json_str = json.dumps(link_arr, indent=4)
-
 # JSON 문자열을 파일에 저장
 with open('scrapping_target_links.json', 'w') as f:
     f.write(json_str)
