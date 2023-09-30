@@ -1,4 +1,5 @@
 from datetime import datetime
+import time
 from bs4 import BeautifulSoup
 from scrapper.upload_images import upload_images
 from scrapper.upload_images import upload_videos
@@ -81,10 +82,15 @@ class BaseScrapper:
                 script_tag.decompose()
 
             updated_html_content = str(content_area).replace('\t', '').replace('\n', '').replace('\\', '')
+            now = datetime.utcnow()
 
             return_dict['title'] = title
-            return_dict['created_at'] = parsed_datetime.isoformat()
+            return_dict['origin_created_at'] = parsed_datetime.isoformat()
+            return_dict['created_at'] = now.isoformat() + "Z"
+            return_dict['updated_at'] = now.isoformat() + "Z"
             return_dict['updated_html_content'] = updated_html_content
+
+
             return return_dict
 
         except Exception as e:

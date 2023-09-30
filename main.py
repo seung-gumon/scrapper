@@ -2,6 +2,7 @@ from scrapper.extractor import link_extractor
 from scrapper.crawling_by_url import crawling_by_url
 from scrapper.select_site_type import select_site
 from scrapper.sort_community import separate_community
+from scrapper.string_html_extract import string_html_extract
 
 import json
 
@@ -38,7 +39,8 @@ try:
                 response = selected_site_instance(soup , site_object["original_url"])
                 check_error(response)
                 response_arr.append(response)
-    print("Response Array ::: ",response_arr)
+    res = string_html_extract(response_arr)
+    print("Response ::: ",res);
 except (ValueError, KeyError) as e:
     if isinstance(e, ValueError):
         print(e)
