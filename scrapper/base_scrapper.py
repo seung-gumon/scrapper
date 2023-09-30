@@ -1,6 +1,8 @@
 from datetime import datetime
 import time
 from bs4 import BeautifulSoup
+import uuid
+import hashlib
 from scrapper.upload_images import upload_images
 from scrapper.upload_images import upload_videos
 
@@ -83,12 +85,17 @@ class BaseScrapper:
 
             updated_html_content = str(content_area).replace('\t', '').replace('\n', '').replace('\\', '')
             now = datetime.utcnow()
-
+            # ID 생성
+            uuid_str = str(uuid.uuid4())
+            hash_object = hashlib.md5(uuid_str.encode())
+            short_id = hash_object.hexdigest()[:8]  # 처음 8자리만 사용
+            # ID 생성 끝
             return_dict['title'] = title
             return_dict['origin_created_at'] = parsed_datetime.isoformat()
             return_dict['created_at'] = now.isoformat() + "Z"
             return_dict['updated_at'] = now.isoformat() + "Z"
             return_dict['updated_html_content'] = updated_html_content
+            return_dict['id'] = short_id
 
 
             return return_dict

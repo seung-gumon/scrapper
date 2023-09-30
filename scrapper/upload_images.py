@@ -75,7 +75,7 @@ class AssetsUploader:
     def upload_images(self, image_urls, folder_name):
         try:
             for index, ele in enumerate(image_urls):
-                if (ele['src'] not in 'https'):
+                if 'https' not in ele['src']:
                     ele['src'] = 'https:' + ele['src']
                 unique_id = str(uuid.uuid4())
                 headers = {
@@ -114,7 +114,7 @@ class AssetsUploader:
     def upload_videos(self, video_urls, folder_name):
         try:
             for index, ele in enumerate(video_urls):
-                if (ele['src'] not in 'https'):
+                if 'https' not in ele['src']:
                     ele['src'] = 'https:' + ele['src']
                 unique_id = str(uuid.uuid4())
                 headers = {

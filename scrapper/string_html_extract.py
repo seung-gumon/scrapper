@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import json
 
 official_attributes = {
     'img': ['src'],
@@ -35,6 +36,6 @@ def string_html_extract(response_arr):
         # updated_html_content 제거 및 content 추가
         if 'updated_html_content' in item:
             del item['updated_html_content']
-        item['contents'] = content
+        item['contents'] = json.dumps(content)
 
     return response_arr

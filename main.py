@@ -3,6 +3,7 @@ from scrapper.crawling_by_url import crawling_by_url
 from scrapper.select_site_type import select_site
 from scrapper.sort_community import separate_community
 from scrapper.string_html_extract import string_html_extract
+from scrapper.save_post_data import save_post_data
 
 import json
 
@@ -40,7 +41,7 @@ try:
                 check_error(response)
                 response_arr.append(response)
     res = string_html_extract(response_arr)
-    print("Response ::: ",res);
+    save_post_data(res)
 except (ValueError, KeyError) as e:
     if isinstance(e, ValueError):
         print(e)
