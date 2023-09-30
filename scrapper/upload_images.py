@@ -75,6 +75,8 @@ class AssetsUploader:
     def upload_images(self, image_urls, folder_name):
         try:
             for index, ele in enumerate(image_urls):
+                if (ele['src'] not in 'https'):
+                    ele['src'] = 'https:' + ele['src']
                 unique_id = str(uuid.uuid4())
                 headers = {
                     'User-Agent': self.user_agent,
@@ -82,7 +84,8 @@ class AssetsUploader:
                 }
                 response = requests.get(ele['src'] , headers=headers)
                 original_image = self.image_processor.download(ele['src'])        
-                print("오리지널 이미지 URL :::" , original_image);
+
+
                 # Check the size of the image in bytes and convert it to megabytes
                 
                 image_size_MB = len(response.content) / (1024 * 1024)
@@ -111,6 +114,8 @@ class AssetsUploader:
     def upload_videos(self, video_urls, folder_name):
         try:
             for index, ele in enumerate(video_urls):
+                if (ele['src'] not in 'https'):
+                    ele['src'] = 'https:' + ele['src']
                 unique_id = str(uuid.uuid4())
                 headers = {
                     'User-Agent': self.user_agent,
