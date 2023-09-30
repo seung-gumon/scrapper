@@ -88,7 +88,7 @@ class BaseScrapper:
             # ID 생성
             uuid_str = str(uuid.uuid4())
             hash_object = hashlib.md5(uuid_str.encode())
-            short_id = hash_object.hexdigest()[:8]  # 처음 8자리만 사용
+            short_id = hash_object.hexdigest()[:13]  # 처음 8자리만 사용
             # ID 생성 끝
             return_dict['title'] = title
             return_dict['origin_created_at'] = parsed_datetime.isoformat()
