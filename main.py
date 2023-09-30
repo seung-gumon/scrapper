@@ -32,12 +32,9 @@ def check_error(response_object):
 
 try:
     response_arr = []
-    print("transformed_json ::: ",transformed_json)
     for site_object in transformed_json:
-                print("뭐야 이거 빈츠 ::: ",site_object)
                 soup = crawling.run(site_object["original_url"])
                 selected_site_instance = select_site(site_object["site_url"])
-                print(site_object["original_url"])
                 response = selected_site_instance(soup , site_object["original_url"])
                 check_error(response)
                 response_arr.append(response)

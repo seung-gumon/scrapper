@@ -82,7 +82,7 @@ class AssetsUploader:
                 }
                 response = requests.get(ele['src'] , headers=headers)
                 original_image = self.image_processor.download(ele['src'])        
-                        
+                print("오리지널 이미지 URL :::" , original_image);
                 # Check the size of the image in bytes and convert it to megabytes
                 
                 image_size_MB = len(response.content) / (1024 * 1024)
@@ -104,7 +104,7 @@ class AssetsUploader:
                 
 
         except Exception as e:
-            print(f'upload class 에서 에러났음 :::  {e}')
+            print(f'upload images methods 에서 에러났음 :::  {e}')
         return image_urls
     
     
@@ -130,7 +130,7 @@ class AssetsUploader:
                 
                 ele['src'] = upload_url
         except Exception as e:
-            print(f'upload class 에서 에러났음 :::  {e}')
+            print(f'upload vidoes methods 에서 에러났음 :::  {e}')
         return video_urls
 
 
