@@ -60,10 +60,24 @@ class AssetsProcessor:
         return True
 
     def convert_to_webp(self, original_image):
-        output_io = BytesIO()
-        original_image.save(output_io, format="WEBP")
+        width, height = original_image.size
+
+        if width > 13000 or height > 13000:
+            output_io = BytesIO()
+            original_image.save(output_io, format=original_image.format)
+        else:
+            output_io = BytesIO()
+            try:
+                original_image.save(output_io, format="WEBP")
+            except Exception as e:
+                print(f"Error converting to WEBP: {e}")
+                # 원본 이미지 포맷으로 다시 저장
+                output_io = BytesIO()
+                original_image.save(output_io, format=original_image.format)
+
         output_io.seek(0)
         return output_io
+
 
 class AssetsUploader:
     def __init__(self, s3_client: S3Client, image_processor: AssetsProcessor, referer_url):
@@ -98,8 +112,11 @@ class AssetsUploader:
                     content_type = 'image/gif'
                 else:
                     output_io = self.image_processor.convert_to_webp(original_image)
+                    width, height = original_image.size
                     extension = 'webp'
-                    content_type = 'image/webp'
+                    if width > 13000 or height > 13000:
+                        extension = original_image.format.lower()
+                    content_type = f"image/{extension}"
                 
                 upload_url = self.s3_client.upload(output_io, folder_name, unique_id, content_type, extension)
                 
