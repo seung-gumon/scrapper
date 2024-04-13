@@ -41,7 +41,8 @@ try:
                 check_error(response)
                 response_arr.append(response)
     res = string_html_extract(response_arr)
-    save_post_data(res)
+    print("Response :::" , res)
+    # save_post_data(res)
 except (ValueError, KeyError) as e:
     if isinstance(e, ValueError):
         print(e)
