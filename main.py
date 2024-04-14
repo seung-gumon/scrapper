@@ -54,5 +54,4 @@ except (ValueError, KeyError) as e:
         # print(f"('{site_url} ::: {str(e)}')")
     if isinstance(e, KeyError):
         print(e)
-        # print(f"('{site_url} ::: 승석아 뭔가 잘못됐다. 확인해봐라..')")
     crawling.close_driver()

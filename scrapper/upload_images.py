@@ -118,9 +118,9 @@ class AssetsUploader:
                         extension = original_image.format.lower()
                     content_type = f"image/{extension}"
                 
-                upload_url = self.s3_client.upload(output_io, folder_name, unique_id, content_type, extension)
+                # upload_url = self.s3_client.upload(output_io, folder_name, unique_id, content_type, extension)
                 
-                ele['src'] = upload_url
+                ele['src'] = "upload_url"
                 
 
         except Exception as e:

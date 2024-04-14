@@ -27,11 +27,13 @@ class BaseScrapper:
                 'created_at': '',
                 'source_url': source_url,
             }
-
+            
+                        
             content_area = self.get_content_area(soup)
             title = self.get_title(soup)
             created_at = self.get_created_at(soup)
             
+            print("title :::", title , "created_at :::", created_at, "source_url :::", source_url)
            
             # 날짜 형식을 처리하는 부분
             formats = [
