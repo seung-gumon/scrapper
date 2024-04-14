@@ -5,7 +5,10 @@ from scrapper.sort_community import separate_community
 from scrapper.string_html_extract import string_html_extract
 from scrapper.save_post_data import save_post_data
 
+
 import json
+
+
 
 # 파일에서 JSON 데이터 읽기
 with open('scrapping_target_links.json', 'r') as f:
@@ -19,11 +22,13 @@ with open('scrapping_target_links.json', 'r') as f:
 
 # 객체 생성 및 실행
 crawling = crawling_by_url()
+
+
+
 transformed_json = separate_community(scrapping_target_link_arr)
 
 
-
-
+print("Transformed_json :::" , transformed_json)
 
 def check_error(response_object):
     if isinstance(response_object, str):
@@ -51,4 +56,3 @@ except (ValueError, KeyError) as e:
         print(e)
         # print(f"('{site_url} ::: 승석아 뭔가 잘못됐다. 확인해봐라..')")
     crawling.close_driver()
-

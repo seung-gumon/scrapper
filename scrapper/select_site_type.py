@@ -1,8 +1,10 @@
-from .each_site_detail_crawling import fm_korea
 from .each_site_detail_crawling import nate_pann
 from .each_site_detail_crawling import dc_inside
 from .each_site_detail_crawling import ruri_web
 from .each_site_detail_crawling import bobae_dream
+from .each_site_detail_crawling import killing_time
+from .each_site_detail_crawling import dc_inside
+from .each_site_detail_crawling import fm_korea
 
 
 
@@ -22,4 +24,7 @@ def select_site(site_url):
       elif site_url == 'https://www.bobaedream.co.kr' :
             bobae_dream_instance = bobae_dream.BobaeDreamScrapper()
             return bobae_dream_instance.scrap
+      elif site_url == 'https://killingtime.co.kr' :
+            killing_time_instance = killing_time.KillingTimeScrapper()
+            return killing_time_instance.scrap
       

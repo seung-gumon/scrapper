@@ -34,7 +34,12 @@ class BaseScrapper:
             
            
             # 날짜 형식을 처리하는 부분
-            formats = ['%Y.%m.%d %H:%M:%S', '%Y.%m.%d %H:%M', '%Y.%m.%d (%H:%M:%S)']  # 추가된 형식
+            formats = [
+                '%Y.%m.%d %H:%M:%S', # "2024.03.24 12:34:56" 형식 추가
+                '%Y.%m.%d %H:%M', # "2024.03.24 12:34" 형식 추가
+                '%Y.%m.%d (%H:%M:%S)', # "2024.03.24 (12:34:56)" 형식 추가
+                '%Y년 %m월 %d일'  # "2024년 03월 24일" 형식 추가
+            ]
             parsed_datetime = None
             for fmt in formats:
                 try:

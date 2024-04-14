@@ -1,6 +1,5 @@
 from datetime import datetime
 from bs4 import BeautifulSoup
-from scrapper.upload_images import upload_images
 from scrapper.base_scrapper import BaseScrapper
 import re  # 정규 표현식 라이브러리
 

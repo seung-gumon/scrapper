@@ -11,7 +11,8 @@ site_names = {
     "https://pann.nate.com": "네이트 판",
     "https://www.bobaedream.co.kr": "보배드림",
     "http://www.etoland.co.kr": "이토랜드",
-    "http://web.humoruniv.com" : "웃긴대학"
+    "http://web.humoruniv.com" : "웃긴대학",
+    "https://killingtime.co.kr" : "페이스북 - 이거 다 보고 자야지"
 }
 
 # 나머지 코드는 동일
@@ -38,7 +39,10 @@ comunity_links = [
 
 class link_extractor:
     def __init__(self):
-        self.driver = webdriver.Chrome()
+        options = webdriver.ChromeOptions()
+        options.add_argument('--headless')  # 브라우저를 머리없는 모드로 실행
+        self.driver = webdriver.Chrome(options=options)
+        self.driver.set_page_load_timeout(10)  # 페이지 로드 최대 10초 대기
         self.collected_links = {}
 
     def load_page(self, url):
@@ -66,7 +70,7 @@ class link_extractor:
                 "site_name": site_name,
                 "links": links
             })
-        return transformed_data;
+        return transformed_data
 
     def run(self, limit=10):
         self.load_page(web_crawling_target)
