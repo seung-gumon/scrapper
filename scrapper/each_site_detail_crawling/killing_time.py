@@ -7,6 +7,18 @@ class KillingTimeScrapper(BaseScrapper):
             super().__init__('killing_time', 'https://www.killingtime.com')
         except Exception as e:
             print(f"Error in __init__: {e}")
+            
+    def clean_attributes(self, soup):
+        for tag in soup.find_all(True):
+            if tag.name == 'figure':  # figure 태그를 div 태그로 변경합니다.
+                tag.name = 'div'
+            # 유지할 속성을 정의합니다.
+            allowed_attrs = {'href', 'src'}
+            attrs = dict(tag.attrs)
+            for attr in attrs:
+                if attr not in allowed_attrs:
+                    del tag.attrs[attr]
+        return soup
 
     def get_content_area(self, soup):
         try:
@@ -15,6 +27,14 @@ class KillingTimeScrapper(BaseScrapper):
                 code_blocks = content_area.find_all(class_="code-block")
                 for block in code_blocks:
                     block.decompose()
+                    
+                # 필요한 속성을 제거하고 figure 태그를 div로 변환합니다.
+                content_area = self.clean_attributes(content_area)
+
+                # 불필요한 속성을 제거합니다.
+                del content_area['class']
+                del content_area['itemprop']
+            print("Content Area :::", content_area)
             return content_area
         except Exception as e:
             print(f"Error in get_content_area: {e}")

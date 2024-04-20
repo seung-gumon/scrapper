@@ -27,4 +27,3 @@ def select_site(site_url):
       elif site_url == 'https://killingtime.co.kr' :
             killing_time_instance = killing_time.KillingTimeScrapper()
             return killing_time_instance.scrap
-      

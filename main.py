@@ -45,8 +45,7 @@ try:
                 response = selected_site_instance(soup , site_object["original_url"])
                 check_error(response)
                 response_arr.append(response)
-    res = string_html_extract(response_arr)
-    print("Response :::" , res)
+    print("Response_arr :::" , response_arr)
     # save_post_data(res)
 except (ValueError, KeyError) as e:
     if isinstance(e, ValueError):

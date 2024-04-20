@@ -30,6 +30,11 @@ class S3Client:
         )
 
     def upload(self, output_io, folder_name, unique_id, content_type='image/webp', extension='webp'):
+        if folder_name == "killing_time":
+            folder_name = "f_1"
+        else:
+            folder_name = "cum"
+        
         object_name = f"{folder_name}/{unique_id}.{extension}"
         self.client.upload_fileobj(
             output_io,
@@ -117,10 +122,13 @@ class AssetsUploader:
                     if width > 13000 or height > 13000:
                         extension = original_image.format.lower()
                     content_type = f"image/{extension}"
+                    
+                    
+                # 버킷에 업로드 URL을 반환합니다.
+                upload_url = self.s3_client.upload(output_io, folder_name, unique_id, content_type, extension)
                 
-                # upload_url = self.s3_client.upload(output_io, folder_name, unique_id, content_type, extension)
-                
-                ele['src'] = "upload_url"
+                print("업로드 URL :::", upload_url)
+                ele['src'] = upload_url
                 
 
         except Exception as e:

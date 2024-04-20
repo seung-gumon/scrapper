@@ -1,10 +1,12 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 from bs4 import BeautifulSoup
+from datetime import datetime
 import uuid
 import hashlib
 from scrapper.upload_images import upload_images
 from scrapper.upload_images import upload_videos
+from urllib.parse import urlparse
 
 class BaseScrapper:
     def __init__(self, site_name, site_url):
@@ -91,18 +93,24 @@ class BaseScrapper:
                 script_tag.decompose()
 
             updated_html_content = str(content_area).replace('\t', '').replace('\n', '').replace('\\', '')
-            now = datetime.utcnow()
-            # ID 생성
-            uuid_str = str(uuid.uuid4())
-            hash_object = hashlib.md5(uuid_str.encode())
-            short_id = hash_object.hexdigest()[:13]  # 처음 8자리만 사용
+            # ID 생성 시작
+            now = datetime.utcnow() + timedelta(hours=9)
+            formatted_date = now.strftime('%y%m%d%H%M') # 2103241234 형식으로 변환
+            parsed_url = urlparse(source_url)
+            domain = parsed_url.netloc.split('.')[0]  # 도메인 추출
+            domain_prefix = domain[:3]  # 도메인 첫 4글자
+            
+            random_part = hashlib.md5(uuid.uuid4().bytes).hexdigest()[:4]  # 임의의 3글자 생성
+            custom_id = formatted_date + domain_prefix + '-' + random_part
+            
+            
             # ID 생성 끝
+            return_dict['id'] = custom_id
             return_dict['title'] = title
             return_dict['origin_created_at'] = parsed_datetime.isoformat()
             return_dict['created_at'] = now.isoformat() + "Z"
             return_dict['updated_at'] = now.isoformat() + "Z"
-            return_dict['updated_html_content'] = updated_html_content
-            return_dict['id'] = short_id
+            return_dict['content'] = updated_html_content
 
 
             return return_dict
