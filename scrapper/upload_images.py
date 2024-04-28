@@ -15,8 +15,8 @@ Image.MAX_IMAGE_PIXELS = None
 
 class Config:
     def __init__(self):
-        self.aws_access_key_id = os.environ.get('aws_access_key_id')
-        self.aws_secret_access_key = os.environ.get('aws_secret_access_key')
+        self.aws_access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
+        self.aws_secret_access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
         self.bucket_name = os.environ.get('image_bucket_name')
         self.user_agent = os.environ.get('user_agent')
 
