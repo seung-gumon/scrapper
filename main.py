@@ -46,7 +46,7 @@ try:
                 check_error(response)
                 response_arr.append(response)
     print("Response_arr :::" , response_arr)
-    # save_post_data(res)
+    save_post_data(response_arr)
 except (ValueError, KeyError) as e:
     if isinstance(e, ValueError):
         print(e)
